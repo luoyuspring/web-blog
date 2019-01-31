@@ -7,11 +7,12 @@ module.exports = {
   /*
   ** Headers of the page
   */
+
   head: {
     title: pkg.name,
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' },
       { hid: 'description', name: 'description', content: pkg.description }
     ],
     link: [
@@ -22,12 +23,15 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#fff' },
+  loading: { 
+    color: 'green'
+  },
 
   /*
   ** Global CSS
   */
   css: [
+    '@/assets/style/main.scss'
   ],
 
   /*
@@ -41,13 +45,23 @@ module.exports = {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy'
   ],
   /*
   ** Axios module configuration
   */
   axios: {
+    proxy: true
     // See https://github.com/nuxt-community/axios-module#options
+  },
+  proxy: {
+    '/srv': {
+      target: 'http://teach.test.codingle.com.cn',
+      pathRewrite: {
+        '^/srv' : '/srv'
+      }
+    }
   },
 
   /*
@@ -58,7 +72,35 @@ module.exports = {
     ** You can extend webpack config here
     */
     extend(config, ctx) {
-      
+      module: {
+        rules: [
+          { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+          {
+            test: /\.scss$/,
+            use: [
+              { loader: 'style-loader' },
+              {
+                loader: 'css-loader', options: {
+                  sourceMap: true, modules: true,
+                  localIdentName: '[local]_[hash:base64:5]'
+                }
+              },
+              {
+                loader: 'postcss-loader',
+                options: {
+                  sourceMap: true,
+                  config: {
+                    path: 'postcss.config.js'
+                  }
+                }
+              },
+              {
+                loader: 'sass-loader', options: { sourceMap: true }
+              }
+            ]
+          }
+        ]
+      }
     }
   }
 }

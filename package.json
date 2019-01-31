@@ -4,8 +4,14 @@
   "description": "My astonishing Nuxt.js project",
   "author": "wangxinchun",
   "private": true,
+  "config": {
+    "nuxt": {
+      "host": "192.168.56.33",
+      "port": "8080"
+    }
+  },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
+    "dev": "nuxt",
     "build": "nuxt build",
     "start": "cross-env NODE_ENV=production node server/index.js",
     "generate": "nuxt generate"
@@ -17,6 +23,19 @@
     "@nuxtjs/axios": "^5.3.6"
   },
   "devDependencies": {
-    "nodemon": "^1.18.9"
-  }
+    "axios": "^0.18.0",
+    "node-sass": "^4.11.0",
+    "nodemon": "^1.18.9",
+    "qs": "^6.6.0",
+    "sass-loader": "^7.1.0",
+    "scss-loader": "0.0.1"
+  },
+  "browserslist": [
+    "defaults",
+    "not ie < 11",
+    "last 2 versions",
+    "> 1%",
+    "iOS 7",
+    "last 3 iOS versions"
+  ]
 }
